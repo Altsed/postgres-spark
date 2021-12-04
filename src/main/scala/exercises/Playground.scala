@@ -18,6 +18,6 @@ object Playground extends App {
   val columns = Seq("language","users_count")
   val data = Seq(("Java", "20000"), ("Python", "100000"), ("Scala", "3000"))
 
-  data.toDF().show()
+  data.toDF(columns:_*).show()
 
 }

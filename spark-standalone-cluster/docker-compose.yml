@@ -28,7 +28,6 @@ services:
       - SPARK_SSL_ENABLED=no
     ports:
       - '8081:8081'
-    restart: on-failure
   spark-worker-2:
     image: docker.io/bitnami/spark:3
     depends_on:
