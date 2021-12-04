@@ -16,4 +16,13 @@ object ExerciseUtils {
 
     SparkSession.builder.config(conf = conf).getOrCreate()
   }
+
+  def getLocalSparkSession(appName: String): SparkSession = {
+
+    val conf = new SparkConf
+    conf.set("spark.master", "local")
+    conf.set("spark.app.name", appName)
+
+    SparkSession.builder.config(conf = conf).getOrCreate()
+  }
 }
