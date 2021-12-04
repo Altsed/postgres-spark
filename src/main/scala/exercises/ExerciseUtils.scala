@@ -11,6 +11,7 @@ object ExerciseUtils {
     conf.set("spark.driver.host", "192.168.1.194")
     conf.set("spark.submit.deployMode", "cluster")
     conf.set("spark.driver.bindAddress", "0.0.0.0")
+    conf.set("spark.dynamicAllocation.enabled", "false")
     conf.set("spark.app.name", appName)
 
     SparkSession.builder.config(conf = conf).getOrCreate()
