@@ -1,13 +1,16 @@
 package exercises.basic
 
 import exercises.ExerciseUtils
+import org.apache.spark.sql.functions.col
 
 /**
   Question
-    - How can you retrieve all the information from the cd.facilities table?
+    - You want to print out a list of all of the facilities and their cost to members.
+     How would you retrieve a list of only facility names and costs?
+    https://pgexercises.com/questions/basic/selectspecific.html
  */
 
-object RetrieveEverythingFromTable extends App {
+object RetrieveSpecificColumns extends App {
 
   val spark = ExerciseUtils.getLocalSparkSession("Spark Basic Sql Practice")
 
@@ -20,5 +23,7 @@ object RetrieveEverythingFromTable extends App {
     .option("password", "spark")
     .load()
 
-  facilitiesDf.show(100, false)
+  facilitiesDf
+    .select(col("name"), col("membercost"))
+    .show(100, false)
 }

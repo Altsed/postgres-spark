@@ -11,7 +11,7 @@ object Playground extends App {
 
   val spark = SparkSession.builder()
     .appName("Postgres Spark Playground App")
-    .config("spark.master", "spark://localhost:7077")
+    .config("spark.master", "spark://192.168.1.38:7077")
     .getOrCreate()
 
   import spark.implicits._
