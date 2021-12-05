@@ -2,7 +2,7 @@ package exercises.basic
 
 import connectors.SparkConnector
 import org.apache.spark.sql.functions.max
-import servise.postgres.GetDataFramePostresService
+import servise.postgres.GetDataFramePostgresService
 
 /**
  *Question
@@ -13,7 +13,7 @@ import servise.postgres.GetDataFramePostresService
 object SimpleAggregation extends App {
 
   val spark = SparkConnector.getLocalSparkSession("Spark Basic Sql Practice")
-  val membersDf = GetDataFramePostresService.getDataFrame(spark, "cd.members")
+  val membersDf = GetDataFramePostgresService.getDataFrame(spark, "cd.members")
 
   membersDf
     .agg(max("joindate"))

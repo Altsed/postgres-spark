@@ -2,7 +2,7 @@ package exercises.basic
 
 import connectors.SparkConnector
 import org.apache.spark.sql.functions.col
-import servise.postgres.GetDataFramePostresService
+import servise.postgres.GetDataFramePostgresService
 
 /**
  *Question
@@ -14,8 +14,8 @@ import servise.postgres.GetDataFramePostresService
 object CombiningMultipleQueries extends App {
 
   val spark = SparkConnector.getLocalSparkSession("Spark Basic Sql Practice")
-  val membersDf = GetDataFramePostresService.getDataFrame(spark, "cd.members")
-  val facilitiesDf = GetDataFramePostresService.getDataFrame(spark, "cd.facilities")
+  val membersDf = GetDataFramePostgresService.getDataFrame(spark, "cd.members")
+  val facilitiesDf = GetDataFramePostgresService.getDataFrame(spark, "cd.facilities")
 
   membersDf
     .select(col("surname"))

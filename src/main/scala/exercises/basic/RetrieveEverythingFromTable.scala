@@ -1,7 +1,7 @@
 package exercises.basic
 
 import connectors.SparkConnector
-import servise.postgres.GetDataFramePostresService.getDataFrame
+import servise.postgres.GetDataFramePostgresService.getDataFrame
 
 /**
  * Question

@@ -4,11 +4,6 @@ import org.apache.spark.sql.SparkSession
 
 object Playground extends App {
 
-  /*val spark = ExerciseUtils.getSparkSession("Postgres Spark Playground App")
-
-  var df2 = spark.read.parquet("D:/temp/ITRACKQ_GL_TRNS_TIGQ_20211114-094534421.parquet.snappy")
-  df2.show(false)*/
-
   val spark = SparkSession.builder()
     .appName("Postgres Spark Playground App")
     .config("spark.master", "spark://192.168.1.38:7077")

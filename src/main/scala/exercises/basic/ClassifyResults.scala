@@ -2,7 +2,7 @@ package exercises.basic
 
 import connectors.SparkConnector
 import org.apache.spark.sql.functions.{col, lit, when}
-import servise.postgres.GetDataFramePostresService.getDataFrame
+import servise.postgres.GetDataFramePostgresService.getDataFrame
 
 /**
  *Question

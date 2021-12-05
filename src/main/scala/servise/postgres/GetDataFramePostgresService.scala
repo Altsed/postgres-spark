@@ -3,7 +3,7 @@ package servise.postgres
 import connectors.PostgresSqlConnector.{jdbcPostgresql, password, postgresqlDriver, user}
 import org.apache.spark.sql.{DataFrame, SparkSession}
 
-object GetDataFramePostresService {
+object GetDataFramePostgresService {
 
 
   def getDataFrame(spark: SparkSession, tableName: String): DataFrame = spark.read
