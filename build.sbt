@@ -2,7 +2,7 @@ name := "postgres-spark"
 
 version := "0.1"
 
-scalaVersion := "2.12.10"
+scalaVersion := "2.12.12"
 
 val sparkVersion = "3.2.0"
 val postgresVersion = "42.2.2"

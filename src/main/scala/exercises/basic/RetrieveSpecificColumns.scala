@@ -1,7 +1,8 @@
 package exercises.basic
 
-import exercises.ExerciseUtils
+import connectors.SparkConnector
 import org.apache.spark.sql.functions.col
+import servise.postgres.GetDataFramePostresService.getDataFrame
 
 /**
   Question
@@ -12,18 +13,10 @@ import org.apache.spark.sql.functions.col
 
 object RetrieveSpecificColumns extends App {
 
-  val spark = ExerciseUtils.getLocalSparkSession("Spark Basic Sql Practice")
-
-  val facilitiesDf = spark.read
-    .format("jdbc")
-    .option("driver", "org.postgresql.Driver")
-    .option("url", "jdbc:postgresql://192.168.1.38:5432/exercises")
-    .option("dbtable", "cd.facilities")
-    .option("user", "spark")
-    .option("password", "spark")
-    .load()
+  val spark = SparkConnector.getLocalSparkSession("Spark Basic Sql Practice")
+  val facilitiesDf = getDataFrame(spark, "cd.facilities")
 
   facilitiesDf
     .select(col("name"), col("membercost"))
-    .show(100, false)
+    .show(100, truncate = false)
 }

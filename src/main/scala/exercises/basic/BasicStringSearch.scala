@@ -6,17 +6,16 @@ import servise.postgres.GetDataFramePostresService.getDataFrame
 
 /**
  *Question
-   How can you produce a list of facilities that charge a fee to members?
-   https://pgexercises.com/questions/basic/where.html
+    How can you produce a list of all facilities with the word 'Tennis' in their name?
+   https://pgexercises.com/questions/basic/where3.html
  */
 
-object ControlWhichRowsRetrieve extends App {
+object BasicStringSearch extends App {
 
   val spark = SparkConnector.getLocalSparkSession("Spark Basic Sql Practice")
   val facilitiesDf = getDataFrame(spark, "cd.facilities")
 
-
   facilitiesDf
-    .filter(col("membercost") > 0)
+    .filter(col("name").contains("Tennis"))
     .show(100, truncate = false)
 }

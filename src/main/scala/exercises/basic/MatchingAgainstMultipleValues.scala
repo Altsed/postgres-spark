@@ -6,17 +6,17 @@ import servise.postgres.GetDataFramePostresService.getDataFrame
 
 /**
  *Question
-   How can you produce a list of facilities that charge a fee to members?
-   https://pgexercises.com/questions/basic/where.html
+   How can you retrieve the details of facilities with ID 1 and 5? Try to do it without using the OR operator.
+   https://pgexercises.com/questions/basic/where4.html
  */
 
-object ControlWhichRowsRetrieve extends App {
+object MatchingAgainstMultipleValues extends App {
 
   val spark = SparkConnector.getLocalSparkSession("Spark Basic Sql Practice")
   val facilitiesDf = getDataFrame(spark, "cd.facilities")
 
 
   facilitiesDf
-    .filter(col("membercost") > 0)
+    .filter(col("facid") === 1 || col("facid") === 5)
     .show(100, truncate = false)
 }

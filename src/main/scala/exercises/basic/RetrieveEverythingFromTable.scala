@@ -1,24 +1,18 @@
 package exercises.basic
 
-import exercises.ExerciseUtils
+import connectors.SparkConnector
+import servise.postgres.GetDataFramePostresService.getDataFrame
 
 /**
-  Question
-    - How can you retrieve all the information from the cd.facilities table?
+ * Question
+ * - How can you retrieve all the information from the cd.facilities table?
  */
 
 object RetrieveEverythingFromTable extends App {
 
-  val spark = ExerciseUtils.getLocalSparkSession("Spark Basic Sql Practice")
+  val spark = SparkConnector.getLocalSparkSession("Spark Basic Sql Practice")
+  val facilitiesDf = getDataFrame(spark, "cd.facilities")
 
-  val facilitiesDf = spark.read
-    .format("jdbc")
-    .option("driver", "org.postgresql.Driver")
-    .option("url", "jdbc:postgresql://192.168.1.38:5432/exercises")
-    .option("dbtable", "cd.facilities")
-    .option("user", "spark")
-    .option("password", "spark")
-    .load()
 
-  facilitiesDf.show(100, false)
+  facilitiesDf.show(100, truncate = false)
 }
