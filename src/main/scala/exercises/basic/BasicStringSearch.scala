@@ -1,7 +1,6 @@
 package exercises.basic
 
 import connectors.SparkConnector
-import org.apache.spark.sql.functions.col
 import servise.postgres.GetDataFramePostgresService.getDataFrame
 
 /**
@@ -12,10 +11,12 @@ import servise.postgres.GetDataFramePostgresService.getDataFrame
 
 object BasicStringSearch extends App {
 
-  val spark = SparkConnector.getLocalSparkSession("Spark Basic Sql Practice")
+  val spark = SparkConnector.getSparkSession("Spark Basic Sql Practice")
   val facilitiesDf = getDataFrame(spark, "cd.facilities")
 
+  import spark.implicits._
+
   facilitiesDf
-    .filter(col("name").contains("Tennis"))
+    .filter($"name".contains("Tennis"))
     .show(100, truncate = false)
 }

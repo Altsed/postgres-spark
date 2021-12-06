@@ -1,7 +1,6 @@
 package exercises.basic
 
 import connectors.SparkConnector
-import org.apache.spark.sql.functions.col
 import servise.postgres.GetDataFramePostgresService.getDataFrame
 
 /**
@@ -15,8 +14,8 @@ object MatchingAgainstMultipleValues extends App {
   val spark = SparkConnector.getLocalSparkSession("Spark Basic Sql Practice")
   val facilitiesDf = getDataFrame(spark, "cd.facilities")
 
-
+  import spark.implicits._
   facilitiesDf
-    .filter(col("facid") === 1 || col("facid") === 5)
+    .filter($"facid" === 1 || $"facid" === 5)
     .show(100, truncate = false)
 }

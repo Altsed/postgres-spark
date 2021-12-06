@@ -16,8 +16,9 @@ object WorkingWithDates extends App {
   val spark = SparkConnector.getLocalSparkSession("Spark Basic Sql Practice")
   val membersDf = GetDataFramePostgresService.getDataFrame(spark, "cd.members")
 
+  import spark.implicits._
   membersDf
-    .select(col("memid"), col("surname"), col("firstname"), col("joindate"))
+    .select($"memid", $"surname", $"firstname", $"joindate")
     .filter(col("joindate") > "2012-09-01")
     .show(100, truncate = false)
 }

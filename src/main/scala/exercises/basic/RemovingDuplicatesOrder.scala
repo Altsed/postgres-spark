@@ -1,7 +1,6 @@
 package exercises.basic
 
 import connectors.SparkConnector
-import org.apache.spark.sql.functions.col
 import servise.postgres.GetDataFramePostgresService
 
 /**
@@ -15,10 +14,10 @@ object RemovingDuplicatesOrder extends App {
   val spark = SparkConnector.getLocalSparkSession("Spark Basic Sql Practice")
   val membersDf = GetDataFramePostgresService.getDataFrame(spark, "cd.members")
 
-
+  import spark.implicits._
   membersDf
-    .select(col("surname"))
+    .select($"surname")
     .dropDuplicates()
-    .orderBy(col("surname").asc)
+    .orderBy($"surname".asc)
     .show(100, truncate = false)
 }

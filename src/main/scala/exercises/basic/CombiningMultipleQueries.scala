@@ -1,7 +1,6 @@
 package exercises.basic
 
 import connectors.SparkConnector
-import org.apache.spark.sql.functions.col
 import servise.postgres.GetDataFramePostgresService
 
 /**
@@ -17,8 +16,9 @@ object CombiningMultipleQueries extends App {
   val membersDf = GetDataFramePostgresService.getDataFrame(spark, "cd.members")
   val facilitiesDf = GetDataFramePostgresService.getDataFrame(spark, "cd.facilities")
 
+  import spark.implicits._
   membersDf
-    .select(col("surname"))
-    .union(facilitiesDf.select(col("name")))
+    .select($"surname")
+    .union(facilitiesDf.select($"name"))
     .show(100, truncate = false)
 }

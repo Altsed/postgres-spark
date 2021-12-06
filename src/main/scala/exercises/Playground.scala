@@ -1,13 +1,10 @@
 package exercises
 
-import org.apache.spark.sql.SparkSession
+import connectors.SparkConnector
 
 object Playground extends App {
 
-  val spark = SparkSession.builder()
-    .appName("Postgres Spark Playground App")
-    .config("spark.master", "spark://192.168.1.38:7077")
-    .getOrCreate()
+  val spark =  SparkConnector.getSparkSession("Spark Basic Sql Practice")
 
   import spark.implicits._
   val columns = Seq("language","users_count")

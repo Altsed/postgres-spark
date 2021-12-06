@@ -1,7 +1,7 @@
 package exercises.basic
 
 import connectors.SparkConnector
-import org.apache.spark.sql.functions.{col, lit, when}
+import org.apache.spark.sql.functions.{lit, when}
 import servise.postgres.GetDataFramePostgresService.getDataFrame
 
 /**
@@ -15,9 +15,10 @@ object ClassifyResults extends App {
 
   val spark = SparkConnector.getLocalSparkSession("Spark Basic Sql Practice")
   val facilitiesDf = getDataFrame(spark, "cd.facilities")
+  import spark.implicits._
 
   facilitiesDf
-    .select(col("name"), col("monthlymaintenance"))
-    .withColumn("cost", when(col("monthlymaintenance") > 100, lit("expensive")).otherwise(lit("cheap")))
+    .select($"name", $"monthlymaintenance")
+    .withColumn("cost", when($"monthlymaintenance" > 100, lit("expensive")).otherwise(lit("cheap")))
     .show(100, truncate = false)
 }

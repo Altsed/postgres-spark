@@ -1,7 +1,6 @@
 package exercises.basic
 
 import connectors.SparkConnector
-import org.apache.spark.sql.functions.col
 import servise.postgres.GetDataFramePostgresService.getDataFrame
 
 /**
@@ -16,7 +15,8 @@ object RetrieveSpecificColumns extends App {
   val spark = SparkConnector.getLocalSparkSession("Spark Basic Sql Practice")
   val facilitiesDf = getDataFrame(spark, "cd.facilities")
 
+  import spark.implicits._
   facilitiesDf
-    .select(col("name"), col("membercost"))
+    .select($"name", $"membercost")
     .show(100, truncate = false)
 }

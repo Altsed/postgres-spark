@@ -1,7 +1,6 @@
 package exercises.basic
 
 import connectors.SparkConnector
-import org.apache.spark.sql.functions.col
 import servise.postgres.GetDataFramePostgresService.getDataFrame
 
 /**
@@ -16,10 +15,10 @@ object ControlWhichRowsRetrieve2 extends App {
   val spark = SparkConnector.getLocalSparkSession("Spark Basic Sql Practice")
   val facilitiesDf = getDataFrame(spark, "cd.facilities")
 
-
+  import spark.implicits._
   facilitiesDf
-    .select(col("name"), col("membercost"), col("monthlymaintenance"))
-    .filter(col("membercost") > 0)
-    .filter(col("membercost") < col("monthlymaintenance") / 50)
+    .select($"name", $"membercost", $"monthlymaintenance")
+    .filter($"membercost" > 0)
+    .filter($"membercost" < $"monthlymaintenance" / 50)
     .show(100, truncate = false)
 }
