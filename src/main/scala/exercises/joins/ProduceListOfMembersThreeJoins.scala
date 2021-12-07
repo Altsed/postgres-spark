@@ -1,8 +1,7 @@
 package exercises.joins
 
 import connectors.SparkConnector
-import org.apache.spark.sql.functions
-import org.apache.spark.sql.functions.lit
+import org.apache.spark.sql.functions._
 import servise.postgres.GetDataFramePostgresService.getDataFrame
 
 object ProduceListOfMembersThreeJoins extends App  {
@@ -13,23 +12,28 @@ object ProduceListOfMembersThreeJoins extends App  {
    Ensure no duplicate data, and order by the member name followed by the facility name.
   https://pgexercises.com/questions/joins/threejoin.html
    */
+
+
   val spark = SparkConnector.getLocalSparkSession("Spark Basic Sql Practice")
+  import spark.implicits._
   val membersDf = getDataFrame(spark, "cd.members")
+    .select(concat($"firstname", lit(" "), $"surname").as("name"), $"memid")
+
   val facilitiesDf = getDataFrame(spark, "cd.facilities")
+    .select($"name".as("facility"), $"facid")
+    .where($"facility".like("Tennis Court %"))
   val bookingsDf = getDataFrame(spark, "cd.bookings")
 
-  import spark.implicits._
+
   val joinedDf = membersDf
-    .select(functions.concat($"firstname", lit(" "), $"surname").as("name"), $"memid")
     .join(bookingsDf.select($"facid", $"memid"), Seq("memid"))
-    .join(facilitiesDf.select($"name".as("facility"), $"facid"), Seq("facid"))
+    .join(facilitiesDf, Seq("facid"))
     .drop($"facid")
     .drop($"memid")
     .distinct()
 
-
   joinedDf
-    .orderBy($"facility")
+    .orderBy($"name", $"facility")
     .show(false)
 
 }
