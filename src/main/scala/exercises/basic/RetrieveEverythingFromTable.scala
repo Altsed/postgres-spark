@@ -13,6 +13,5 @@ object RetrieveEverythingFromTable extends App {
   val spark = SparkConnector.getLocalSparkSession("Spark Basic Sql Practice")
   val facilitiesDf = getDataFrame(spark, "cd.facilities")
 
-
   facilitiesDf.show(100, truncate = false)
 }

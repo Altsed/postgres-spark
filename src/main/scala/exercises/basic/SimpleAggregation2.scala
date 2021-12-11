@@ -14,10 +14,9 @@ object SimpleAggregation2 extends App {
 
   val spark = SparkConnector.getLocalSparkSession("Spark Basic Sql Practice")
   val membersDf = GetDataFramePostgresService.getDataFrame(spark, "cd.members")
-
-
+  import spark.implicits._
   membersDf
-    .select(col("surname"),col("firstname"), col("joindate"))
+    .select($"surname", $"firstname", $"joindate")
     .orderBy(col("joindate").desc).limit(1)  // not sure that it always be last date, better use head or first
     .show(100, truncate = true)
 
