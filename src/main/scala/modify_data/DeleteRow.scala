@@ -16,7 +16,7 @@ object DeleteRow extends App  {
   val facility: Facility = Facility(9, "Spa", 20, 30, 100000, 800)
   val facilitiesDf = getDataFrame(spark, "cd.facilities")
 
-  facilitiesDf.foreachPartition(iter => {
+  facilitiesDf.rdd.foreachPartition(iter => {
 
     val connection = DriverManager.getConnection("jdbc:postgresql://192.168.1.38:5432/exercises","spark", "spark")
     val statement = connection.prepareStatement("delete from cd.facilities where facid = ?")
