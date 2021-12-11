@@ -3,9 +3,9 @@ package exercises.aggregates
 import connectors.SparkConnector
 import org.apache.spark.sql.expressions.Window
 import org.apache.spark.sql.functions
-import org.apache.spark.sql.functions.{to_date, when}
-import org.apache.spark.sql.types.{LongType, TimestampType}
+import org.apache.spark.sql.functions.{avg, to_date, unix_timestamp, when}
 import servise.postgres.GetDataFramePostgresService.getDataFrame
+
 
 /**
  * Question
@@ -28,22 +28,32 @@ object CalculateRollingAverageRevenues extends App {
 
   def daysToLong(quantityOfDays: Int): Int = quantityOfDays * 86400
 
-  val windowSpecDateMinus15days = Window
-    .orderBy($"date".cast(TimestampType).cast(LongType))
-    .rangeBetween(-daysToLong(15), 0)
+  val windowSpecDateMinus14days = Window
+    .orderBy(unix_timestamp($"date"))
+    .rangeBetween(-daysToLong(14), 0)
 
 
-
-
-  val groupDf3 = selectedBookings
+  val revdataDf =  selectedBookings
     .select(to_date($"starttime", "yyyy-MM-dd").as("date"), $"memid", $"facid",$"slots")
     .join(facilitiesDf.select($"facid", $"guestcost", $"membercost"), Seq("facid"))
     .withColumn("revenue", when($"memid" === 0, $"guestcost"*$"slots").otherwise($"membercost"*$"slots"))
-    .withColumn("revenue_per_day", functions.sum($"revenue").over(Window.partitionBy($"date")))
-//    .withColumn("avg_per_15days", functions.avg($"revenue_per_day").over(windowSpecDateMinus15days)) // diff results from agg, why?
-    .groupBy($"date", $"revenue_per_day")
-    .agg(functions.avg($"revenue_per_day").over(windowSpecDateMinus15days).as("avg_per_15days"))
-    .filter($"date" > "2012-07-31" && $"date" < "2012-09-01")
-    .orderBy($"date")
+    .groupBy($"date")
+    .agg(functions.sum("revenue").as("revenue"))
+    .filter($"date">= "2012-07-10" && $"date" <= "2012-08-31")
+    .withColumn("avg_revenue", avg($"revenue").over(windowSpecDateMinus14days))
+    .filter($"date" >= "2012-08-01")
+    .show(false)
+
+
+//  timestamp '2012-07-10', '2012-08-31','1 day'
+
+//  private val unixStart: Long = LocalDate.parse("2012-07-10").toEpochSecond(LocalTime.MIDNIGHT, ZoneOffset.UTC)
+//  private val unixEnd: Long = LocalDate.parse("2012-08-31").toEpochSecond(LocalTime.MIDNIGHT, ZoneOffset.UTC)
+//
+//  val dategenDf = (unixStart to unixEnd by 86400).map(lit).map(to_timestamp).map(to_date)
+//
+//  revdataDf.withColumn("dategen", array(dategenDf:_*))
+//    .show(false)
+
 
 }
